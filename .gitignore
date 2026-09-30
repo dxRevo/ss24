@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+apps/web/.react-router/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Local dev artifacts
+vault/
+.claude/settings.local.json
+
+# Stale snapshot of the original Horizons export (PocketBase-era, superseded)
+app.tar.gz
+
+# OS
+.DS_Store

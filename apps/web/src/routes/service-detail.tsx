@@ -1,0 +1,4 @@
+import type { Route } from './+types/service-detail';import { seo } from '@/lib/seo';import { services } from '@/data/site';import { ServiceDetail } from '@/components/services/service-detail';
+export function loader({params}:Route.LoaderArgs){const service=services.find(s=>s.slug===params.slug);if(!service)throw new Response('Service introuvable',{status:404});return {service}}
+export function meta({matches,location,loaderData}:Route.MetaArgs){return seo({matches,location},{title:loaderData?`${loaderData.service.title} | 24 Services & Supplies`:'Service introuvable',description:loaderData?`${loaderData.service.subtitle} Découvrez notre approche, nos domaines d’intervention et demandez un devis pour votre projet au Sénégal.`:'Ce service est introuvable.',image:loaderData?.service.image,noindex:!loaderData})}
+export default function ServicePage({loaderData}:Route.ComponentProps){return <main><ServiceDetail service={loaderData.service}/></main>}

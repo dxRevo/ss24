@@ -1,0 +1,3 @@
+import type { Route } from './+types/contact';import { seo } from '@/lib/seo';import { PageHero } from '@/components/page-hero';import { ContactContent } from '@/components/contact/contact-content';
+export function meta({matches,location}:Route.MetaArgs){return seo({matches,location},{title:'Contact et devis | 24 Services & Supplies',description:'Contactez 24 Services & Supplies à Dakar pour vos projets techniques et industriels. Envoyez une demande de devis : réponse sous 24h, urgences prises en charge 24/7.'})}
+export default function Contact(){return <main><PageHero label="Contactez-nous" title="Chaque projet commence par une conversation." description="Parlez-nous de votre besoin. Réponse sous 24h, urgences 24/7."/><ContactContent/></main>}

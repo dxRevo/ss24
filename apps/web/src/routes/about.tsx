@@ -1,0 +1,3 @@
+import type { Route } from './+types/about';import { seo } from '@/lib/seo';import { PageHero } from '@/components/page-hero';import { AboutContent } from '@/components/about/about-content';
+export function meta({matches,location}:Route.MetaArgs){return seo({matches,location},{title:'À propos | 24 Services & Supplies',description:'Découvrez 24 Services & Supplies, votre partenaire technique basé à Dakar. Expertise, engagement QHSE et disponibilité 24h/24 pour vos projets au Sénégal.'})}
+export default function About(){return <main><PageHero label="À propos de nous" title="Votre besoin, notre engagement." description="Une équipe engagée à transformer vos défis techniques en solutions durables, avec réactivité et exigence."/><AboutContent/></main>}
