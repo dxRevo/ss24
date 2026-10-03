@@ -12,8 +12,11 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 - [x] Donner au site sa propre identité vis-à-vis d'apsxyz.ca : renommer les 5 catégories de services et leurs sous-domaines trop proches, retirer « ONG » (n'existait que sur notre site, pas le leur), ajouter une animation de compteur sur les chiffres clés.
 - [ ] **Confirmer que `24servicesandsupplies.com` (codé en dur dans `lib/site-origin.server.ts`) est bien le domaine acheté chez Hostinger** — sinon corriger cette seule constante.
 - [ ] Vérifier visuellement (`npm run dev`) le contenu et les animations (secteurs, bénéfices service, FAQ étendue, menu mobile animé…) ; le formulaire affichera une erreur en local, c'est normal (`send.php` ne tourne que sur un hébergement PHP).
-- [ ] Initialiser Git + `.gitignore` (`node_modules`, `dist`, `.react-router`, `.env`, `app.tar.gz`) avant les gros changements suivants.
-- [ ] Mettre en place le déploiement : dépôt GitHub + workflow GitHub Actions qui build puis dépose le résultat en FTP dans `public_html` chez Hostinger (identifiants FTP en secrets GitHub, jamais dans le code).
+- [x] Initialiser Git + `.gitignore`, et pousser sur [github.com/dxRevo/ss24](https://github.com/dxRevo/ss24) (branche `main`).
+- [x] Intégrer le vrai logo dans l'en-tête et le pied de page ; ajouter `netlify.toml` (publish dir corrigé suite à une erreur de déploiement test).
+- [ ] Si possible, obtenir une version du logo **sans le texte** (juste le cercle « 24 ») pour l'en-tête, plus lisible qu'un recadrage du logo complet à petite taille.
+- [ ] Dans l'interface Netlify, corriger le champ *Publish directory* (actuellement `apps/web/build/client`) pour qu'il corresponde à `netlify.toml` (`dist/apps/web/client`) — un réglage fait dans l'UI peut rester prioritaire sur le fichier du dépôt.
+- [ ] Mettre en place le déploiement : workflow GitHub Actions qui build puis dépose le résultat en FTP dans `public_html` chez Hostinger (identifiants FTP en secrets GitHub, jamais dans le code).
 - [ ] Configurer `send.php` sur l'hébergement réel : vérifier que `mail()` part bien (SPF/DKIM du domaine, sinon risque de spam) ; envisager `PHPMailer` + SMTP si `mail()` s'avère peu fiable chez Hostinger.
 - [ ] Renseigner les vraies coordonnées : numéro WhatsApp dans `WHATSAPP` (`src/data/site.ts`), numéro de téléphone pour le bouton « Nous appeler », liens réseaux sociaux réels dans `site-footer.tsx`.
 - [ ] Retirer les plugins Horizons de `vite.config.ts` et `apps/web/plugins/` si le build et le dev restent fonctionnels une fois le site quitté de la plateforme Horizons.

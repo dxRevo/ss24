@@ -68,6 +68,20 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - **Volontairement pas repris** : leur carrousel de logos partenaires (nous n'avons pas de vrais partenaires/marques à afficher — en inventer aurait été mentir) ; les autres animations (apparition au défilement, survol des cartes, accordéon FAQ) existaient déjà côté nôtre et remplissent le même rôle que leurs animations d'entrée Elementor.
 - **Vérifié** : `npm run typecheck`, `npm run lint`, `npm run build` passent sans erreur ; les nouvelles URLs de service sont bien générées ; recherche dans le HTML généré confirmant qu'aucune ancienne URL ni aucune mention « ONG » (secteur) ne subsiste (les seules occurrences de la sous-chaîne « ong » restantes sont dans le mot « strong », sans rapport).
 
+## Mise à jour 2026-10-01 — Titre d'accueil retravaillé, Git initialisé et poussé sur GitHub
+
+- **Hero** (`components/home/hero.tsx`) : après deux allers-retours avec l'utilisateur, le titre « Toujours là. 24h/24, 7j/7. » (jugé pas assez distinctif, puis sa première reformulation « De l'étude à la maintenance. » jugée trop réductrice — la maintenance n'est qu'une facette de l'activité) est devenu **« Étudier. Construire. Équiper. »**, trois verbes qui mettent en avant les activités à forte valeur plutôt que le cycle de vie ou la seule disponibilité. Le 24/7 reste mentionné dans le paragraphe sous le titre.
+- **Dépôt Git initialisé et poussé** sur [github.com/dxRevo/ss24](https://github.com/dxRevo/ss24), branche `main` (premier commit `42e3b0b`). Identité Git déjà configurée globalement sur la machine (dxrevo / 6ceejey@gmail.com), réutilisée telle quelle.
+- **`.gitignore`** créé : `node_modules/`, `dist/`, `apps/web/.react-router/`, `.env`/`.env.*`, `apps/web/vault/` (journal de session généré par le plugin Horizons en dev, repéré en préparant le commit), `.claude/settings.local.json`, et **`app.tar.gz`** (l'instantané Horizons/PocketBase, maintenant obsolète et volumineux — exclu du suivi Git mais **pas supprimé du disque**).
+- 178 fichiers commités, aucun `node_modules`/`dist`/secret/fichier ignoré n'a été inclus (vérifié avant le commit).
+- **Non fait dans ce même geste** : aucune mise à jour de `PROGRESS.md`/`TODO.md` n'a encore été commitée après ce premier push (ce fichier inclus) — à committer/pousser séparément si l'utilisateur le demande, conformément à la règle « ne pas commit/push sans demande explicite ».
+
+## Mise à jour 2026-10-03 — Logo réel, test Netlify
+
+- **Vrai logo intégré** : `apps/web/public/logo.webp` (103 Ko, réduit depuis l'original 864 Ko/1470×1070 fourni par l'utilisateur, PNG de secours conservé en `logo.png`). Remplace l'ancien logo « bricolé » en CSS dans l'en-tête et le pied de page. Point en suspens : le fichier contient le cercle **et** le texte « SERVICES & SUPPLIES » en un seul visuel, donc à 56 px de haut dans l'en-tête ce texte est petit — une version du logo sans texte (juste le cercle) donnerait un meilleur résultat en en-tête si l'utilisateur peut la fournir.
+- **`netlify.toml` ajouté** à la racine (`command = "npm run build"`, `publish = "dist/apps/web/client"`) suite à un test de déploiement Netlify par l'utilisateur qui a échoué : le réglage fait dans l'interface Netlify pointait vers `apps/web/build/client`, qui n'existe pas (notre build sort dans `dist/apps/web/client`). L'utilisateur doit aussi corriger ce champ côté interface Netlify, un réglage UI pouvant rester prioritaire sur le fichier. Rappel : ce test Netlify est juste pour vérifier que le site statique se construit bien — l'hébergement retenu reste Hostinger, et `/php/send.php` ne fonctionnera pas sur Netlify (pas de PHP).
+- Commité et poussé sur `main` à la demande de l'utilisateur.
+
 ## Problèmes connus / risques
 
 - **`send.php` n'est testable qu'une fois déployé** sur un hébergement PHP (Hostinger) — impossible de vérifier l'envoi d'e-mail en local.
