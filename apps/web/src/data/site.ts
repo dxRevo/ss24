@@ -2,7 +2,7 @@ export const HERO_IMAGE = 'https://images.hostinger.com/3f8352ee-6189-4e6d-b312-
 export const TECH_IMAGE = 'https://images.hostinger.com/81517cc6-4d14-4395-a197-d0476ebbd185.png';
 export const SOLAR_IMAGE = 'https://images.hostinger.com/261b9359-2c3f-4d17-9bef-1b424056a55c.png';
 export const EMAIL = 'contact@24servicesandsupplies.com';
-export const WHATSAPP = 'https://wa.me/?text=Bonjour%2C%20je%20souhaite%20contacter%2024%20Services%20%26%20Supplies.';
+export const WHATSAPP = 'https://wa.me/221781918048?text=Bonjour%2C%20je%20souhaite%20contacter%2024%20Services%20%26%20Supplies.';
 export type Domain = { name: string; description: string; points: string[] };
 export type ServiceFaq = { q: string; a: string };
 export type Service = { slug: string; title: string; short: string; subtitle: string; image: string; tags: string[]; overview: string[]; domains: Domain[]; steps: string[]; benefits: string[]; sectors: string[]; faqs: ServiceFaq[] };
