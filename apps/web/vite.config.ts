@@ -18,7 +18,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 export default defineConfig({
 	server: {
 		port: 3000,
-		host: '::',
+		host: true,
 		cors: { origin: AllowedEditorOrigins },
 		headers: {
 			'Cross-Origin-Embedder-Policy': 'credentialless',
@@ -31,7 +31,7 @@ export default defineConfig({
 	},
 	preview: {
 		port: 3000,
-		host: '::',
+		host: true,
 		allowedHosts: ['.app-preview.com', '.app-preview.io'],
 	},
 	resolve: {
