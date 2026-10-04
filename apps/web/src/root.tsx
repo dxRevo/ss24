@@ -9,6 +9,7 @@ import {
 import type { Route } from './+types/root';
 import stylesheet from '@/index.css?url';
 import { siteOrigin } from '@/lib/site-origin.server';
+import { useLocale } from '@/i18n/locale';
 import { HorizonsPreviewScripts } from './horizons-preview-scripts';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
@@ -43,8 +44,10 @@ export function loader() {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
+	const locale = useLocale();
+
 	return (
-		<html lang="fr">
+		<html lang={locale}>
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />

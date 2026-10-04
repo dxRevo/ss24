@@ -17,5 +17,8 @@ vault/
 # Stale snapshot of the original Horizons export (PocketBase-era, superseded)
 app.tar.gz
 
+# Local build artifacts, not source
+site-hostinger.zip
+
 # OS
 .DS_Store

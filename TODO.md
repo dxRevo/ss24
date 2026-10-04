@@ -14,6 +14,10 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 - [ ] Vérifier visuellement (`npm run dev`) le contenu et les animations (secteurs, bénéfices service, FAQ étendue, menu mobile animé…) ; le formulaire affichera une erreur en local, c'est normal (`send.php` ne tourne que sur un hébergement PHP).
 - [x] Initialiser Git + `.gitignore`, et pousser sur [github.com/dxRevo/ss24](https://github.com/dxRevo/ss24) (branche `main`).
 - [x] Intégrer le vrai logo dans l'en-tête et le pied de page ; ajouter `netlify.toml` (publish dir corrigé suite à une erreur de déploiement test).
+- [x] Corriger le titre des pages intérieures trop grand sur mobile (`page-hero.tsx`).
+- [x] Rendre le site bilingue FR/EN (`/en` préfixé) : routage, SEO (hreflang, sitemap), contenu et interface traduits, sélecteur de langue. Voir `CLAUDE.md` (section i18n) pour les conventions à suivre pour toute nouvelle page/texte.
+- [ ] **Vérifier visuellement le site bilingue** (`npm run dev`, tester `/` et `/en/*`, le sélecteur de langue, un chemin de service profond dans les deux langues).
+- [ ] **Commiter et pousser le travail bilingue** (en attente de demande explicite de l'utilisateur).
 - [ ] Si possible, obtenir une version du logo **sans le texte** (juste le cercle « 24 ») pour l'en-tête, plus lisible qu'un recadrage du logo complet à petite taille.
 - [ ] Dans l'interface Netlify, corriger le champ *Publish directory* (actuellement `apps/web/build/client`) pour qu'il corresponde à `netlify.toml` (`dist/apps/web/client`) — un réglage fait dans l'UI peut rester prioritaire sur le fichier du dépôt.
 - [ ] Mettre en place le déploiement : workflow GitHub Actions qui build puis dépose le résultat en FTP dans `public_html` chez Hostinger (identifiants FTP en secrets GitHub, jamais dans le code).
@@ -24,6 +28,8 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 
 ## Priorité moyenne
 
+- [ ] Le message WhatsApp pré-rempli (`WHATSAPP` dans `data/site.ts`) est en français même sur les pages anglaises — prévoir une variante EN si pertinent.
+- [ ] Le JSON-LD `Organization` de l'accueil (`routes/home.tsx`) reste en français dans les deux langues ; l'ancre `#qui-sommes-nous` du bouton « Découvrir »/« Discover » n'est pas traduite — fonctionnel mais pas idiomatique.
 - [ ] Revoir si besoin les 4 `tags` restants par service (mots-clés courts type « Audit », « Faisabilité ») — laissés tels quels car génériques au secteur, mais à reformuler si un chevauchement supplémentaire avec un concurrent est repéré.
 - [ ] Ajouter une limite de fréquence sur `send.php` (ex. par IP) en plus du honeypot déjà en place, pour limiter les abus.
 - [ ] Traduire/styler l'`ErrorBoundary` de `root.tsx` (404 et erreurs en français, cohérent avec le site).

@@ -4,7 +4,7 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 
 ## Contexte de l'analyse
 
-- Le dossier **n'est pas un dépôt Git** : aucun historique n'est consultable, cet historique vit uniquement dans cette conversation.
+- Dépôt Git : [github.com/dxRevo/ss24](https://github.com/dxRevo/ss24), branche `main`. L'historique détaillé des décisions (pourquoi, pas seulement quoi) vit surtout dans la conversation, pas dans les messages de commit.
 - `app.tar.gz` (racine) est un **instantané figé de l'état d'origine** (export Hostinger Horizons, avec PocketBase) : il diverge maintenant significativement du code actuel. Ne pas s'y fier pour l'état présent.
 
 ## Direction décidée
@@ -17,8 +17,8 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 
 ## Fonctionnalités présentes (code écrit)
 
-- Site vitrine FR en SSR : accueil (hero, présentation, secteurs accompagnés, offre, « plus » avec FAQ), À propos (engagement QHSE détaillé, témoignages sectoriels, raisons de confiance), Services (liste de 5), fiche service dynamique `/services/:slug` (bénéfices + secteurs concernés, 404 si slug inconnu), Contact (rappel du processus en 3 étapes).
-- Contenu centralisé dans `apps/web/src/data/site.ts` : 5 services (chacun avec `benefits`, `sectors` et `faqs` — 3 questions par service), `sectors[]` (4 secteurs accompagnés), `faqs[]` globales (8), e-mail de contact.
+- Site vitrine **bilingue FR/EN**, entièrement statique : accueil (hero, présentation, secteurs accompagnés, offre, « plus » avec FAQ), À propos (engagement QHSE détaillé, témoignages sectoriels, raisons de confiance), Services (liste de 5), fiche service dynamique `/services/:slug` (bénéfices + secteurs concernés, 404 si slug inconnu), Contact (rappel du processus en 3 étapes). Chaque page existe en français (`/...`) et en anglais (`/en/...`).
+- Contenu centralisé dans `apps/web/src/data/site.ts` (FR) et `site.en.ts` (EN, mêmes slugs) : 5 services (chacun avec `benefits`, `sectors` et `faqs` — 3 questions par service), `sectors[]` (4 secteurs accompagnés), `faqs[]` globales (8), e-mail de contact. Les textes d'interface (nav, boutons, libellés) vivent dans `i18n/dictionary.ts`.
 - SEO : `seo()` (title, description, canonical/og, JSON-LD Organization sur l'accueil), `sitemap.xml`, `robots.txt`, header `Link` vers le sitemap.
 - **Formulaires → PHP** : le formulaire de contact et l'inscription newsletter postent en `FormData` vers `/php/send.php`, qui envoie un e-mail à `contact@24servicesandsupplies.com` et répond en JSON. Anti-spam par champ honeypot (`company`, invisible pour un humain).
 - Animations de défilement (`framer-motion` + `lib/motion.ts`) sur l'accueil, À propos, Services et Contact ; FAQ et menu mobile animés.
@@ -82,6 +82,28 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - **`netlify.toml` ajouté** à la racine (`command = "npm run build"`, `publish = "dist/apps/web/client"`) suite à un test de déploiement Netlify par l'utilisateur qui a échoué : le réglage fait dans l'interface Netlify pointait vers `apps/web/build/client`, qui n'existe pas (notre build sort dans `dist/apps/web/client`). L'utilisateur doit aussi corriger ce champ côté interface Netlify, un réglage UI pouvant rester prioritaire sur le fichier. Rappel : ce test Netlify est juste pour vérifier que le site statique se construit bien — l'hébergement retenu reste Hostinger, et `/php/send.php` ne fonctionnera pas sur Netlify (pas de PHP).
 - Commité et poussé sur `main` à la demande de l'utilisateur.
 
+## Mise à jour 2026-10-03 — Titre des pages intérieures trop grand sur mobile
+
+- `components/page-hero.tsx` : le `<h1>` avait un plancher de taille de 2.8rem (44,8 px), trop grand pour un titre long (« Construction & infrastructures ») sur un téléphone étroit — débordement/wrap disgracieux signalé par l'utilisateur. Plancher ramené à 2rem (32 px, aligné sur `.section-title`), plafond desktop inchangé. Commité et poussé (`2c1d98a`).
+
+## Mise à jour 2026-10-04 — Site bilingue FR/EN
+
+À la demande de l'utilisateur (« le site doit être bilingue français, anglais »). Décision prise avec l'utilisateur : anglais sous préfixe `/en`, français inchangé à la racine (pas de `/fr/`, pas de sous-domaine séparé).
+
+- **Nouveau : `apps/web/src/i18n/`** — `locale.tsx` (type `Locale`, `useLocale()`, `localizePath()`/`delocalizePath()` pour convertir un chemin FR canonique ↔ sa version `/en/...`, `LocaleLink`/`LocaleNavLink` qui localisent automatiquement leur `to`, `useAlternateLocalePath()` pour le sélecteur de langue) ; `dictionary.ts` (toutes les chaînes d'interface — nav, boutons, libellés, messages de statut — en FR et EN, servies par `useT()`).
+- **Nouveau : `apps/web/src/data/site.en.ts`** — miroir anglais complet de `site.ts` : mêmes 5 services, mêmes `slug` (identifiants partagés entre les deux langues), tout le reste traduit (titres, sous-domaines, bénéfices, secteurs, FAQ par service). `sectors[]` et les 8 FAQ globales traduits aussi. Et **`data/i18n.ts`** : `getServices/getSectors/getFaqs/getServiceBySlug(locale)` + hook `useSiteContent()`.
+- **`routes.ts`** : miroir des 5 routes FR sous `/en` (via le helper `prefix()`) pointant vers **les mêmes fichiers route** — pas de duplication de fichiers. Fallait donner un `id` explicite à chaque route EN (`{id:'en-home'}` etc.) pour éviter une collision d'id avec la route FR qui réutilise le même fichier.
+- **`react-router.config.ts`** : `prerender()` génère maintenant les 9 chemins FR **et** leurs 9 équivalents `/en/...` (mapping de segments dupliqué en dur dans ce fichier plutôt qu'importé de `i18n/locale.tsx`, pour ne pas faire charger un module JSX par le chargeur de config Node — voir CLAUDE.md).
+- **`root.tsx`** : `<html lang>` dynamique via `useLocale()`.
+- **`lib/seo.ts`** : ajoute les balises `<link rel="alternate" hreflang="fr"/"en"/"x-default">` sur chaque page.
+- **`routes/sitemap.xml.ts`** : liste maintenant les deux langues (18 URLs au lieu de 9), chaque `<url>` annoté avec des `<xhtml:link rel="alternate">` vers son équivalent dans l'autre langue.
+- **Tous les composants de page** réécrits pour lire `useT()` (textes d'interface) et/ou `useSiteContent()` (contenu) au lieu de texte français en dur ou d'un import direct de `data/site.ts`.
+- **Sélecteur de langue** ajouté dans l'en-tête (desktop + menu mobile), « FR »/« EN », qui pointe vers la page équivalente dans l'autre langue (pas juste l'accueil).
+- **Bug corrigé en cours de route** : le sélecteur de langue utilisait `LocaleLink` sur une URL déjà entièrement résolue par `useAlternateLocalePath()`, ce qui la relocalisait une seconde fois (`/en` → `/en/en`-like, détecté via inspection du HTML généré : le lien « FR » affiché sur la page anglaise pointait vers `/en` au lieu de `/`). Corrigé en utilisant le `Link` brut de `react-router` pour ce cas précis (voir la note dans CLAUDE.md).
+- **Bug TypeScript corrigé** : le dictionnaire était écrit avec `as const`, ce qui rendait les types FR et EN incompatibles entre eux (littéraux de chaîne différents) ; retiré, les deux objets sont maintenant typés en `string` simple.
+- **Vérifié** : `npm run typecheck`, `npm run lint`, `npm run build` passent sans erreur. Build inspecté en détail : `<html lang="fr">` vs `"en"`, titres `<title>` traduits, texte du hero traduit, hreflang présents sur les deux versions, sitemap avec 18 URLs et alternates corrects, `robots.txt` inchangé, `/php/send.php` toujours livré, sélecteur de langue testé dans les deux sens y compris sur une page profonde (`/services/eau-assainissement` ↔ `/en/services/eau-assainissement`, le slug est bien conservé). Contenu français relu pour confirmer qu'il n'a pas été altéré par la refonte.
+- **Non commité pour l'instant** — à faire sur demande explicite.
+
 ## Problèmes connus / risques
 
 - **`send.php` n'est testable qu'une fois déployé** sur un hébergement PHP (Hostinger) — impossible de vérifier l'envoi d'e-mail en local.
@@ -91,11 +113,12 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - Aucun test automatisé ; pas de README.
 - Domaine codé en dur (`site-origin.server.ts`) à confirmer (voir ci-dessus).
 - Aucun `.htaccess` : pas de redirection HTTP→HTTPS forcée, pas de page 404 personnalisée (Apache servira sa propre page brute pour un chemin inconnu ; React Router génère un `__spa-fallback.html` mais rien ne le branche encore à Apache).
+- **Bilingue — détails mineurs non traités** : le JSON-LD `Organization` de la page d'accueil (`routes/home.tsx`) reste en français dans les deux langues (adresse postale, nom — raisonnable, mais pas vérifié avec l'utilisateur) ; l'ancre `#qui-sommes-nous` du bouton « Découvrir » du hero n'est pas traduite en anglais (fonctionne, juste pas idiomatique dans l'URL).
 
 ## Prochaine étape recommandée
 
-1. Confirmer le domaine réel (voir ci-dessus) et corriger `site-origin.server.ts` si besoin.
-2. Lancer `npm run dev` pour vérifier visuellement le contenu et les animations (le formulaire affichera une erreur en local, c'est attendu — `send.php` ne s'exécute que sur Hostinger).
-3. Initialiser Git (à la demande de l'utilisateur).
-4. Mettre en place le déploiement : dépôt GitHub + workflow GitHub Actions (build → FTP vers `public_html`).
-5. Traiter les placeholders de contact (WhatsApp, téléphone, réseaux sociaux).
+1. Lancer `npm run dev` pour vérifier visuellement le site bilingue (FR, EN, et le sélecteur de langue) et les animations.
+2. Confirmer le domaine réel (voir ci-dessus) et corriger `site-origin.server.ts` si besoin.
+3. Mettre en place le déploiement : workflow GitHub Actions (build → FTP vers `public_html` chez Hostinger).
+4. Traiter les placeholders de contact (WhatsApp, téléphone, réseaux sociaux).
+5. Commiter et pousser le travail bilingue (en attente de demande explicite).

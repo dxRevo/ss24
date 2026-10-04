@@ -12,6 +12,7 @@
  * because SEO audits score the card tags on their own.
  */
 import type { MetaDescriptor } from 'react-router';
+import { delocalizePath, localizePath } from '@/i18n/locale';
 
 type RouteMatchLike = { id: string; loaderData: unknown } | undefined;
 
@@ -75,7 +76,16 @@ export function seo({ matches, location }: SeoArgs, input: SeoInput): MetaDescri
 	];
 
 	if (origin) {
-		tags.push({ tagName: 'link', rel: 'canonical', href: canonical }, { property: 'og:url', content: canonical });
+		const frPath = delocalizePath(input.path ?? location.pathname);
+		const enPath = localizePath(frPath, 'en');
+
+		tags.push(
+			{ tagName: 'link', rel: 'canonical', href: canonical },
+			{ property: 'og:url', content: canonical },
+			{ tagName: 'link', rel: 'alternate', hreflang: 'fr', href: absoluteUrl(origin, frPath) },
+			{ tagName: 'link', rel: 'alternate', hreflang: 'en', href: absoluteUrl(origin, enPath) },
+			{ tagName: 'link', rel: 'alternate', hreflang: 'x-default', href: absoluteUrl(origin, frPath) },
+		);
 	}
 
 	if (imageUrl) {

@@ -1,5 +1,6 @@
 import { siteOrigin } from '@/lib/site-origin.server';
 import { services } from '@/data/site';
+import { localizePath } from '@/i18n/locale';
 
 type SitemapEntry = {
 	path: string;
@@ -21,19 +22,29 @@ function toLoc(origin: string, path: string): string {
 	return `${origin}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+/**
+ * Every page exists in French (canonical) and English (`/en` prefix) — each
+ * gets its own `<url>` entry, and each entry lists both language variants as
+ * `xhtml:link` alternates so crawlers can pair them up.
+ */
 function serializeSitemap(origin: string, entries: SitemapEntry[]): string {
-	const urls = entries
-		.map(entry => {
-			const loc = escapeXml(toLoc(origin, entry.path));
-			const lastmod = entry.lastmod
-				? `\n\t\t<lastmod>${escapeXml(entry.lastmod)}</lastmod>`
-				: '';
+	const blocks = entries.flatMap(entry => {
+		const frPath = entry.path;
+		const enPath = localizePath(frPath, 'en');
+		const lastmod = entry.lastmod ? `\n\t\t<lastmod>${escapeXml(entry.lastmod)}</lastmod>` : '';
+		const alternates = [
+			`\n\t\t<xhtml:link rel="alternate" hreflang="fr" href="${escapeXml(toLoc(origin, frPath))}"/>`,
+			`\n\t\t<xhtml:link rel="alternate" hreflang="en" href="${escapeXml(toLoc(origin, enPath))}"/>`,
+		].join('');
 
-			return `\t<url>\n\t\t<loc>${loc}</loc>${lastmod}\n\t</url>`;
-		})
-		.join('\n');
+		return [frPath, enPath].map(path => {
+			const loc = escapeXml(toLoc(origin, path));
 
-	return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+			return `\t<url>\n\t\t<loc>${loc}</loc>${lastmod}${alternates}\n\t</url>`;
+		});
+	});
+
+	return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${blocks.join('\n')}\n</urlset>\n`;
 }
 
 /**
