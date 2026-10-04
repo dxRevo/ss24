@@ -2,6 +2,9 @@
   "name": "monorepo-ssr",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.22.0"
+  },
   "scripts": {
     "setup": "npm install",
     "dev": "npm run dev --prefix apps/web",
