@@ -24,7 +24,7 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 - [ ] **Vérifier que la boîte mail `contact@sevicesandsupplies24.com` existe réellement** dans hPanel → E-mails, sinon `send.php` « réussira » sans que rien n'arrive nulle part.
 - [ ] **Tester le formulaire de contact et l'inscription newsletter en conditions réelles** (le bouton WhatsApp et le chargement des pages FR/EN sont déjà confirmés).
 - [ ] Repousser le build avec le 6ᵉ service (nouveau `site-hostinger.zip` à générer et uploader).
-- [ ] Décider où (le cas échéant) utiliser la seconde photo fournie (groupe froid Carrier AquaSnap), non utilisée pour l'instant.
+- [x] Les deux photos « Froid & climatisation » sont maintenant utilisées (nouveau champ `image2`, visible dans la section « Aperçu » de la fiche service).
 - [ ] Si possible, obtenir une version du logo **sans le texte** (juste le cercle « 24 ») pour l'en-tête, plus lisible qu'un recadrage du logo complet à petite taille.
 - [ ] Dans l'interface Netlify, corriger le champ *Publish directory* (actuellement `apps/web/build/client`) pour qu'il corresponde à `netlify.toml` (`dist/apps/web/client`) — un réglage fait dans l'UI peut rester prioritaire sur le fichier du dépôt. (Note : Netlify n'est plus la piste privilégiée pour le build, voir ci-dessus — à garder seulement si on veut un second test de build fonctionnel.)
 - [ ] Mettre en place GitHub Actions pour builder automatiquement et déposer le résultat en FTP dans `public_html` chez Hostinger (identifiants FTP en secrets GitHub, jamais dans le code) — solution durable pour ne plus reconstruire/uploader le zip à la main à chaque changement.
