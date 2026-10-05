@@ -18,8 +18,13 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 - [x] Rendre le site bilingue FR/EN (`/en` préfixé) : routage, SEO (hreflang, sitemap), contenu et interface traduits, sélecteur de langue. Voir `CLAUDE.md` (section i18n) pour les conventions à suivre pour toute nouvelle page/texte.
 - [x] Corriger le lien WhatsApp (numéro réel ajouté).
 - [x] **Build natif Hostinger testé et abandonné** après investigation approfondie (incompatibilité probable entre le bac à sable de build de Hostinger et le mécanisme de pré-rendu de React Router, qui a besoin de se connecter en réseau à lui-même). Retour au dépôt manuel du build (`site-hostinger.zip`) en attendant GitHub Actions. Voir `PROGRESS.md` pour le détail de l'investigation (versions Node, `host` de Vite, script de diagnostic `scripts/check-loopback.cjs`).
+- [x] **Site en ligne et confirmé fonctionnel** sur `sevicesandsupplies24.com` (dépôt manuel du zip) — testé par l'utilisateur et vérifié par requêtes directes (FR, EN, sitemap).
+- [x] **Domaine réel corrigé** : `sevicesandsupplies24.com` (pas `24servicesandsupplies.com`) et e-mail `contact@sevicesandsupplies24.com` partout dans le code.
+- [x] **6ᵉ service ajouté : Froid & climatisation** (`data/site.ts`/`site.en.ts`, image locale `public/froid-climatisation.webp`, tous les compteurs/textes « 5 services » corrigés en « 6 »).
 - [ ] **Vérifier que la boîte mail `contact@sevicesandsupplies24.com` existe réellement** dans hPanel → E-mails, sinon `send.php` « réussira » sans que rien n'arrive nulle part.
-- [ ] **Tester le site une fois uploadé** : formulaire de contact, inscription newsletter, bouton WhatsApp, sélecteur de langue FR/EN.
+- [ ] **Tester le formulaire de contact et l'inscription newsletter en conditions réelles** (le bouton WhatsApp et le chargement des pages FR/EN sont déjà confirmés).
+- [ ] Repousser le build avec le 6ᵉ service (nouveau `site-hostinger.zip` à générer et uploader).
+- [ ] Décider où (le cas échéant) utiliser la seconde photo fournie (groupe froid Carrier AquaSnap), non utilisée pour l'instant.
 - [ ] Si possible, obtenir une version du logo **sans le texte** (juste le cercle « 24 ») pour l'en-tête, plus lisible qu'un recadrage du logo complet à petite taille.
 - [ ] Dans l'interface Netlify, corriger le champ *Publish directory* (actuellement `apps/web/build/client`) pour qu'il corresponde à `netlify.toml` (`dist/apps/web/client`) — un réglage fait dans l'UI peut rester prioritaire sur le fichier du dépôt. (Note : Netlify n'est plus la piste privilégiée pour le build, voir ci-dessus — à garder seulement si on veut un second test de build fonctionnel.)
 - [ ] Mettre en place GitHub Actions pour builder automatiquement et déposer le résultat en FTP dans `public_html` chez Hostinger (identifiants FTP en secrets GitHub, jamais dans le code) — solution durable pour ne plus reconstruire/uploader le zip à la main à chaque changement.

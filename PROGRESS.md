@@ -13,14 +13,14 @@ _Dernière mise à jour : 2026-09-29. À mettre à jour après chaque tâche imp
 - **Formulaires : script PHP** (`apps/web/public/php/send.php`) — fait le 2026-09-29.
 - **PocketBase : retiré** — fait le 2026-09-29 (voir plus bas).
 - **Pré-rendu statique** (`ssr: false` + `prerender`) — fait le 2026-09-29 (voir plus bas).
-- Déploiement (GitHub + Actions → FTP Hostinger) : **pas encore configuré**. C'est la prochaine grosse étape.
+- **Déploiement : site en ligne**, sur `https://sevicesandsupplies24.com`, via dépôt manuel du build (`site-hostinger.zip`) dans `public_html`. GitHub Actions reste à mettre en place pour automatiser (voir TODO).
 
 ## Fonctionnalités présentes (code écrit)
 
-- Site vitrine **bilingue FR/EN**, entièrement statique : accueil (hero, présentation, secteurs accompagnés, offre, « plus » avec FAQ), À propos (engagement QHSE détaillé, témoignages sectoriels, raisons de confiance), Services (liste de 5), fiche service dynamique `/services/:slug` (bénéfices + secteurs concernés, 404 si slug inconnu), Contact (rappel du processus en 3 étapes). Chaque page existe en français (`/...`) et en anglais (`/en/...`).
-- Contenu centralisé dans `apps/web/src/data/site.ts` (FR) et `site.en.ts` (EN, mêmes slugs) : 5 services (chacun avec `benefits`, `sectors` et `faqs` — 3 questions par service), `sectors[]` (4 secteurs accompagnés), `faqs[]` globales (8), e-mail de contact. Les textes d'interface (nav, boutons, libellés) vivent dans `i18n/dictionary.ts`.
+- Site vitrine **bilingue FR/EN**, entièrement statique, **en ligne** : accueil (hero, présentation, secteurs accompagnés, offre, « plus » avec FAQ), À propos (engagement QHSE détaillé, témoignages sectoriels, raisons de confiance), Services (liste de 6), fiche service dynamique `/services/:slug` (bénéfices + secteurs concernés, 404 si slug inconnu), Contact (rappel du processus en 3 étapes). Chaque page existe en français (`/...`) et en anglais (`/en/...`).
+- Contenu centralisé dans `apps/web/src/data/site.ts` (FR) et `site.en.ts` (EN, mêmes slugs) : 6 services (chacun avec `benefits`, `sectors` et `faqs` — 3 questions par service), `sectors[]` (4 secteurs accompagnés), `faqs[]` globales (8), e-mail de contact. Les textes d'interface (nav, boutons, libellés) vivent dans `i18n/dictionary.ts`.
 - SEO : `seo()` (title, description, canonical/og, JSON-LD Organization sur l'accueil), `sitemap.xml`, `robots.txt`, header `Link` vers le sitemap.
-- **Formulaires → PHP** : le formulaire de contact et l'inscription newsletter postent en `FormData` vers `/php/send.php`, qui envoie un e-mail à `contact@24servicesandsupplies.com` et répond en JSON. Anti-spam par champ honeypot (`company`, invisible pour un humain).
+- **Formulaires → PHP** : le formulaire de contact et l'inscription newsletter postent en `FormData` vers `/php/send.php`, qui envoie un e-mail à `contact@sevicesandsupplies24.com` et répond en JSON. Anti-spam par champ honeypot (`company`, invisible pour un humain).
 - Animations de défilement (`framer-motion` + `lib/motion.ts`) sur l'accueil, À propos, Services et Contact ; FAQ et menu mobile animés.
 - Le site est **entièrement statique** : `dist/apps/web/client/` (956 Ko) contient un `index.html` par page, `sitemap.xml`, `robots.txt` et `php/send.php`, prêt à être déposé dans `public_html` chez Hostinger. Plus de routes `/api/*` ni de serveur Node en production.
 
@@ -117,6 +117,18 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - **Domaine réel découvert et corrigé** : en configurant le Gestionnaire de fichiers Hostinger, l'utilisateur a révélé que le vrai domaine est **`sevicesandsupplies24.com`** (sans le « r » de « services », « 24 » à la fin) — différent de `24servicesandsupplies.com` que le code utilisait depuis le début du projet (supposition jamais confirmée jusqu'ici, malgré plusieurs demandes). Corrigé aux 4 endroits concernés : `lib/site-origin.server.ts` (origine canonique), `data/site.ts` (`EMAIL`), `public/php/send.php` (`RECIPIENT`, `FROM_ADDRESS`). L'adresse e-mail de contact devient `contact@sevicesandsupplies24.com` (confirmé explicitly par l'utilisateur). Le nom de l'entreprise affiché (« 24 Services & Supplies ») reste inchangé — seul le domaine/l'e-mail technique a changé.
 - **Déploiement manuel repris** : `site-hostinger.zip` reconstruit et revérifié (bon domaine, bonne adresse e-mail, bon numéro WhatsApp) pour upload direct dans `public_html` via le Gestionnaire de fichiers — solution qui fonctionne de façon fiable, contrairement au build natif.
 - **Vérifié** à chaque étape : `typecheck`, `lint`, `build` local (toujours réussi, du début à la fin de cette investigation — le problème n'a jamais été reproductible en local, seulement chez Hostinger).
+- **Site confirmé en ligne et fonctionnel** après le dépôt manuel : testé par l'utilisateur (navigation privée, portable et téléphone) et par moi-même (requêtes directes sur `sevicesandsupplies24.com` et `www.sevicesandsupplies24.com`, FR et EN, sitemap valide à 20 URLs). Une alerte `DNS_PROBE_FINISHED_NXDOMAIN` rencontrée par certains contacts de l'utilisateur s'est révélée être de la propagation DNS classique après activation du domaine, résolue d'elle-même.
+
+## Mise à jour 2026-10-05 — 6ᵉ service : Froid & climatisation
+
+À la demande de l'utilisateur, avec deux photos fournies (unités de climatisation en toiture, groupe froid Carrier AquaSnap).
+
+- **Nouveau service** `froid-climatisation` ajouté dans `data/site.ts` et `data/site.en.ts` (même structure que les 5 autres : overview, 4 domaines, 4 étapes, 4 bénéfices, secteurs, 3 FAQ — traduit intégralement).
+- **Image** : la photo des unités en toiture (cohérente avec le style « terrain » des autres photos du site, contrairement à la photo produit Carrier sur fond blanc) — enregistrée localement dans `public/froid-climatisation.webp` (182 Ko, compressée depuis l'original) plutôt que sur le CDN externe `images.hostinger.com` utilisé par les 5 autres services. La photo du groupe Carrier n'a pas été utilisée (un seul champ `image` par service) — à intégrer ailleurs si l'utilisateur le souhaite.
+- **Toutes les mentions de « 5 »/« cinq »/« five » services corrigées** : `i18n/dictionary.ts` (meta description et titre de la page Services, FR+EN), `routes/services.tsx` (sa propre copie de la meta description), compteurs animés « 05 »→« 06 » (`home/overview.tsx`, `about-content.tsx`).
+- **`home/offer.tsx`** : avec 6 services, la grille se répartit maintenant en 2 rangées égales de 3 — la mise en forme spéciale de la 1ʳᵉ carte (double largeur) a été retirée, plus nécessaire et désormais déséquilibrée. Icône `Snowflake` (lucide) ajoutée pour ce service.
+- **Vérifié** : `typecheck`, `lint`, `build` passent ; les 2 nouvelles pages (`/services/froid-climatisation`, `/en/services/froid-climatisation`) se prérendent correctement, titres et image confirmés dans le HTML généré.
+- **Non commité au moment de l'écriture** — à faire sur demande explicite.
 
 ## Problèmes connus / risques
 
