@@ -16,8 +16,8 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 
 /** Recipient and envelope-from live on the same domain as the site. */
-const RECIPIENT = 'contact@24servicesandsupplies.com';
-const FROM_ADDRESS = 'no-reply@24servicesandsupplies.com';
+const RECIPIENT = 'contact@sevicesandsupplies24.com';
+const FROM_ADDRESS = 'no-reply@sevicesandsupplies24.com';
 
 function respond(bool $ok, ?string $error = null, int $status = 200): void
 {

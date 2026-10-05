@@ -8,6 +8,6 @@
  *
  * Update this if the site moves to a different domain.
  */
-const SITE_ORIGIN = 'https://24servicesandsupplies.com';
+const SITE_ORIGIN = 'https://sevicesandsupplies24.com';
 
 export const siteOrigin = (): string => SITE_ORIGIN;
