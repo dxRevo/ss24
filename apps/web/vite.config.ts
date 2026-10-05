@@ -31,7 +31,14 @@ export default defineConfig({
 	},
 	preview: {
 		port: 3000,
-		host: true,
+		// Literal loopback IP, not `true`/'localhost': react-router's prerender
+		// starts this server, reads back Vite's own resolvedUrls.local, and
+		// connects to that address with node:http (no DNS-order fallback if
+		// the name it got resolves the "wrong" way in a given sandbox). Vite
+		// only emits a bare IP in resolvedUrls.local — never a hostname that
+		// needs a DNS lookup — when `host` is itself a literal IP; with
+		// `true` it reports "localhost" and the lookup is out of our hands.
+		host: '127.0.0.1',
 		allowedHosts: ['.app-preview.com', '.app-preview.io'],
 	},
 	resolve: {
