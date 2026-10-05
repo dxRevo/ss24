@@ -139,6 +139,18 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - **Vérifié** : `typecheck`, `lint`, `build` passent ; les deux images (plaques solaires + turbine) confirmées présentes dans le HTML généré de `/services/energie-electrification` et `/en/services/energie-electrification`.
 - **Non commité au moment de l'écriture** — à faire sur demande explicite.
 
+## Mise à jour 2026-10-05 — Mention « Afrique de l'Ouest »
+
+À la demande de l'utilisateur, le périmètre géographique annoncé passe de « Sénégal » seul à « Sénégal et Afrique de l'Ouest », dans `i18n/dictionary.ts` (FR + EN) :
+
+- Hero de l'accueil (`heroEyebrow`).
+- Meta description de l'accueil et de la page À propos.
+- Texte d'introduction de la page À propos (`about.intro1`).
+- Tagline du pied de page (`footer.tagline`, visible sur toutes les pages).
+- L'adresse (« Dakar, Sénégal ») et le reste du contenu (services, secteurs, FAQ) restent inchangés — seule l'accroche de couverture géographique évolue.
+- **Vérifié** : `typecheck`, `lint`, `build` passent ; la mention apparaît dans le HTML généré de l'accueil et de À propos (FR + EN).
+- **Non commité au moment de l'écriture** — à faire sur demande explicite.
+
 ## Problèmes connus / risques
 
 - **`send.php` n'est testable qu'une fois déployé** sur un hébergement PHP (Hostinger) — impossible de vérifier l'envoi d'e-mail en local.
