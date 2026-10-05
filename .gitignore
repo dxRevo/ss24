@@ -19,6 +19,7 @@ app.tar.gz
 
 # Local build artifacts, not source
 site-hostinger.zip
+site-hostinger/
 
 # OS
 .DS_Store

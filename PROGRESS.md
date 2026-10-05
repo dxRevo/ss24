@@ -130,6 +130,15 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - **Vérifié** : `typecheck`, `lint`, `build` passent ; les 2 nouvelles pages (`/services/froid-climatisation`, `/en/services/froid-climatisation`) se prérendent correctement, titres et image confirmés dans le HTML généré.
 - **Non commité au moment de l'écriture** — à faire sur demande explicite.
 
+## Mise à jour 2026-10-05 — Second visuel pour « Énergie & électrification »
+
+À la demande de l'utilisateur (« ajoute cette image à côté des plaques solaires »), avec une photo fournie d'une turbine à gaz industrielle (GE) en site industriel.
+
+- **Réutilisation du mécanisme `image2`** créé pour Froid & climatisation : nouvelle constante `ENERGIE_IMAGE_2 = '/energie-turbine.webp'` dans `data/site.ts`, assignée en `image2` sur le service `energie-electrification` (`data/site.ts` et `data/site.en.ts`, import mis à jour). Le bandeau d'en-tête et la vignette de la liste des services continuent d'utiliser `SOLAR_IMAGE` (plaques solaires) ; seule la section « Aperçu » de la fiche service affiche désormais la turbine.
+- **Image compressée et hébergée localement** : `public/energie-turbine.webp` (103 Ko, via `cwebp -q 85`), plutôt que sur le CDN externe `images.hostinger.com`.
+- **Vérifié** : `typecheck`, `lint`, `build` passent ; les deux images (plaques solaires + turbine) confirmées présentes dans le HTML généré de `/services/energie-electrification` et `/en/services/energie-electrification`.
+- **Non commité au moment de l'écriture** — à faire sur demande explicite.
+
 ## Problèmes connus / risques
 
 - **`send.php` n'est testable qu'une fois déployé** sur un hébergement PHP (Hostinger) — impossible de vérifier l'envoi d'e-mail en local.
