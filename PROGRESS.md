@@ -151,6 +151,15 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - **Vérifié** : `typecheck`, `lint`, `build` passent ; la mention apparaît dans le HTML généré de l'accueil et de À propos (FR + EN).
 - **Non commité au moment de l'écriture** — à faire sur demande explicite.
 
+## Mise à jour 2026-10-06 — Teinte allégée sur les héros des pages Services
+
+À la demande de l'utilisateur (« sur les pages services faut enlever la teinte sur les heros pour que les images apparaissent mieux »).
+
+- **`page-hero.tsx`** : nouvelle prop optionnelle `lightOverlay` (défaut `false`, comportement inchangé partout ailleurs). Quand elle est activée, l'image passe à `opacity-100` et le dégradé navy (`div` superposé) n'est plus rendu du tout — demandé en deux temps par l'utilisateur (d'abord allégé à `opacity-80`/`via-[#0A1F44]/35`, puis « enlève la teinte complètement »).
+- **Activée uniquement sur `/services`** (`routes/services.tsx`) **et `/services/:slug`** (`components/services/service-detail.tsx`) — les héros de À propos et Contact restent avec la teinte d'origine (comportement par défaut de `PageHero`, non touché).
+- **Vérifié** : `typecheck`, `lint`, `build` passent ; `opacity-100` et absence de `via-[#0A1F44]/80` confirmés dans le HTML généré des pages services, `opacity-40`/`via-[#0A1F44]/80` inchangées sur À propos.
+- **Non commité au moment de l'écriture** — à faire sur demande explicite.
+
 ## Problèmes connus / risques
 
 - **`send.php` n'est testable qu'une fois déployé** sur un hébergement PHP (Hostinger) — impossible de vérifier l'envoi d'e-mail en local.
