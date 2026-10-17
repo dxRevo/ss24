@@ -160,6 +160,16 @@ En comparant plus attentivement, l'utilisateur a repéré que les **5 catégorie
 - **Vérifié** : `typecheck`, `lint`, `build` passent ; `opacity-100` et absence de `via-[#0A1F44]/80` confirmés dans le HTML généré des pages services, `opacity-40`/`via-[#0A1F44]/80` inchangées sur À propos.
 - **Non commité au moment de l'écriture** — à faire sur demande explicite.
 
+## Mise à jour 2026-10-17 — Brochure téléchargeable sur l'accueil
+
+À la demande de l'utilisateur, qui a fourni le PDF « Company Profile 24 Services & Supplies » (11 pages, bilingue FR/EN, 6,1 Mo).
+
+- **Fichier déposé tel quel** dans `apps/web/public/brochure-24-services-supplies.pdf` (copié dans `dist/apps/web/client/` par le build, comme tout fichier de `public/`) — un seul PDF pour les deux langues, son contenu étant déjà bilingue.
+- **Nouveau bouton dans le hero de l'accueil** (`components/home/hero.tsx`), à côté de « Demander un devis » / « Nous appeler » : lien `<a href="/brochure-24-services-supplies.pdf" download>` (pas `LocaleLink`, car c'est un fichier statique et non une route interne). Icône `Download` (lucide). Libellé `home.heroCtaBrochure` ajouté dans `i18n/dictionary.ts` (FR « Télécharger la brochure » / EN « Download brochure »).
+- **Emplacement choisi par l'utilisateur** parmi 3 options proposées (page À propos / pied de page / accueil) : accueil uniquement pour l'instant.
+- **Vérifié** : `typecheck`, `lint`, `build` passent ; le PDF est bien copié dans `dist/apps/web/client/` et le bouton apparaît sur les pages d'accueil FR et EN générées.
+- **Non commité au moment de l'écriture** — à faire sur demande explicite.
+
 ## Problèmes connus / risques
 
 - **`send.php` n'est testable qu'une fois déployé** sur un hébergement PHP (Hostinger) — impossible de vérifier l'envoi d'e-mail en local.
